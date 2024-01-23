@@ -7,23 +7,27 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.generation.blogpessoal.model.Usuario;
 import com.generation.blogpessoal.repository.UsuarioRepository;
 
-public class UserDetailsServiceImpl implements UserDetailsService{
-
+@Service
+public class UserDetailsServiceImpl implements UserDetailsService {
+	
 	@Autowired
-	private UsuarioRepository usuarioRepository; 
-	//injeção de dependencias para conseguir consultar no banco
+	private UsuarioRepository usuarioRepository;
+
 	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		// TODO Auto-generated method stub
-		Optional<Usuario> usuario = usuarioRepository.findByUsuario(username);
-		if(usuario.isPresent())
+	public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
+
+		Optional<Usuario> usuario = usuarioRepository.findByUsuario(userName);
+
+		if (usuario.isPresent())
 			return new UserDetailsImpl(usuario.get());
-			else 
-				throw new ResponseStatusException(HttpStatus.FORBIDDEN); 
+		else
+			throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+			
 	}
 }
